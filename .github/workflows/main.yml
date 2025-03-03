@@ -1,0 +1,137 @@
+import pandas as pd 
+
+import matplotlib.pyplot as plt 
+
+import seaborn as sns 
+
+ 
+
+ 
+
+url='https://raw.githubusercontent.com/arora123/Data/master/Automobile_data.csv' 
+
+df=pd.read_csv(url) 
+
+df.head() 
+
+ 
+
+missing_values = df.isnull().sum() 
+
+df_cleaned = df.dropna() 
+
+print(f"Original rows: {df.shape[0]}, After cleaning: {df_cleaned.shape[0]}") 
+
+ 
+
+ 
+
+df_cleaned['price'] = pd.to_numeric(df_cleaned['price'], errors='coerce') 
+
+min_price_car = df_cleaned.loc[df_cleaned['price'].idxmin()] 
+
+max_price_car = df_cleaned.loc[df_cleaned['price'].idxmax()] 
+
+ 
+
+print(f"Car with minimum price:\n{min_price_car}") 
+
+print(f"Car with maximum price:\n{max_price_car}") 
+
+ 
+
+ 
+
+body_style_counts = df_cleaned['body-style'].value_counts() 
+
+print(body_style_counts) 
+
+ 
+
+avg_price_body = df_cleaned.groupby('body-style')['price'].mean().sort_values(ascending=False) 
+
+print(avg_price_body) 
+
+ 
+
+avg_price_company = df_cleaned.groupby('company')['price'].mean().sort_values(ascending=False) 
+
+print(avg_price_company) 
+
+cylinders_count = df_cleaned['num-of-cylinders'].value_counts() 
+
+print(cylinders_count) 
+
+ 
+
+plt.figure(figsize=(10,6)) 
+
+sns.barplot(x='company', y='price', data=df_cleaned) 
+
+plt.xticks(rotation=90) 
+
+plt.title('Average Price of Cars by Company') 
+
+plt.show() 
+
+ 
+
+ 
+
+plt.figure(figsize=(10,6)) 
+
+sns.countplot(x='company', hue='num-of-cylinders', data=df_cleaned) 
+
+plt.xticks(rotation=90) 
+
+plt.title('Number of Cylinders per Company') 
+
+plt.show() 
+
+ 
+
+ 
+
+plt.figure(figsize=(10,6)) 
+
+sns.boxplot(x='body-style', y='price', data=df_cleaned) 
+
+plt.xticks(rotation=90) 
+
+plt.title('Price Distribution by Body Style') 
+
+plt.show() 
+
+ 
+
+ 
+
+plt.figure(figsize=(10,6)) 
+
+sns.countplot(x='body-style', hue='num-of-cylinders', data=df_cleaned) 
+
+plt.xticks(rotation=90) 
+
+plt.title('Number of Cylinders by Body Style') 
+
+plt.show() 
+
+ 
+
+ 
+
+plt.figure(figsize=(10,6)) 
+
+sns.boxplot(x='engine-type', y='horsepower', data=df_cleaned) 
+
+plt.xticks(rotation=90) 
+
+plt.title('Horsepower Distribution by Engine Type') 
+
+plt.show() 
+
+ 
+
+ 
+
+ 
